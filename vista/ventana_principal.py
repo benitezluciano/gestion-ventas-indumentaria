@@ -2,6 +2,7 @@ import datetime
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
+from vista.ventana_categoria import VentanaCategorias
 
 from servicio import producto_servicio, venta_servicio
 from vista.ventana_base import VentanaBase
@@ -39,6 +40,7 @@ class VentanaPrincipal:
             ("Ver catálogo",      self.mostrar_catalogo,        0, 1),
             ("Realizar venta",    self.abrir_realizar_venta,    1, 0),
             ("Ver historial",     self.mostrar_historial,       1, 1),
+            ("Categorías", self.abrir_categorias, 0, 2),
         ]
         for texto, comando, fila, col in botones:
             Button(frame, text=texto, font="sans", width=18,
@@ -175,9 +177,12 @@ class VentanaPrincipal:
             except ValueError as e:
                 msg_var.set(str(e))
 
+
         Button(v, text="Confirmar venta", font="sans", bg="#99999B",
                command=ejecutar).grid(
             row=2, column=0, columnspan=2, pady=10)
         Label(v, textvariable=msg_var, fg="white",
               bg="#1A477A", wraplength=360).grid(
             row=3, column=0, columnspan=2, padx=10)
+    def abrir_categorias(self):
+            VentanaCategorias(self.ventana, self.log)
