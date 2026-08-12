@@ -6,7 +6,7 @@ from vista.ventana_categoria import VentanaCategorias
 
 from servicio import producto_servicio, venta_servicio
 from vista.ventana_base import VentanaBase
-
+from vista.ventana_historial import VentanaHistorial
 
 class VentanaPrincipal:
     def __init__(self, root):
@@ -83,14 +83,7 @@ class VentanaPrincipal:
 
     # ── HISTORIAL ──────────────────────────────────────────────────────────
     def mostrar_historial(self):
-        ventas = venta_servicio.obtener_historial()
-        self.log("HISTORIAL DE VENTAS:")
-        if not ventas:
-            self.log("  No hay ventas registradas.")
-            return
-        for v in ventas:
-            self.log(f"  Venta #{v.id} | {v.fecha} | "
-                     f"Total: ${v.total} | Estado: {v.estado}")
+        VentanaHistorial(self.ventana, self.log)
 
     # ── AGREGAR PRODUCTO ───────────────────────────────────────────────────
     def abrir_agregar_producto(self):

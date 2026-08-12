@@ -42,4 +42,21 @@ def obtener_historial():
 def cancelar_venta(venta_id: int, motivo: str):
     if not motivo or not motivo.strip():
         raise ValueError("El motivo de cancelación es obligatorio.")
+
+    # Recuperar los detalles para reintegrar stock
+    conn = __import__('repositorio.database', fromlist=['get_connection']).get_connection()
+    detalles = conn.execute(
+        "SELECT producto_id, cantidad FROM detalle_venta WHERE venta_id = ?",
+        (venta_id,)
+    ).fetchall()
+    conn.close()
+
+    for detalle in detalles:
+        producto = producto_repo.obtener_por_id(detalle["producto_id"])
+        if producto:
+            producto_repo.actualizar_stock(
+                detalle["producto_id"],
+                producto.stock + detalle["cantidad"]
+            )
+
     venta_repo.cancelar(venta_id, motivo)
